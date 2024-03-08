@@ -58,6 +58,7 @@ if __name__ == '__main__':
     """read args"""
     global args, device
     args = parse_args()
+    print(args)
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_id)
     device = torch.device("cuda:0") if args.cuda else torch.device("cpu")
 
@@ -106,6 +107,8 @@ if __name__ == '__main__':
                                   n_negs)
 
             batch_loss, _, _ = model(batch)
+            # if s%1000==0:
+            #     print(f"batch {s}, batch loss {batch_loss.item()}")
 
             optimizer.zero_grad()
             batch_loss.backward()
@@ -116,7 +119,7 @@ if __name__ == '__main__':
 
         train_e_t = time()
 
-        if epoch % 5 == 0:
+        if epoch % 1 == 0:
             """testing"""
 
             train_res = PrettyTable()
@@ -143,17 +146,17 @@ if __name__ == '__main__':
 
             # *********************************************************
             # early stopping when cur_best_pre_0 is decreasing for 10 successive steps.
-            cur_best_pre_0, stopping_step, should_stop = early_stopping(valid_ret['recall'][0], cur_best_pre_0,
+            cur_best_pre_0, stopping_step, should_stop = early_stopping(valid_ret['ndcg'][3], cur_best_pre_0,
                                                                         stopping_step, expected_order='acc',
                                                                         flag_step=10)
             if should_stop:
                 break
 
             """save weight"""
-            if valid_ret['recall'][0] == cur_best_pre_0 and args.save:
+            if valid_ret['ndcg'][3] == cur_best_pre_0 and args.save:
                 torch.save(model.state_dict(), args.out_dir + 'model_' + '.ckpt')
         else:
             # logging.info('training loss at epoch %d: %f' % (epoch, loss.item()))
             print('using time %.4fs, training loss at epoch %d: %.4f' % (train_e_t - train_s_t, epoch, loss.item()))
 
-    print('early stopping at %d, recall@20:%.4f' % (epoch, cur_best_pre_0))
+    print('early stopping at %d, ndcg@20:%.4f' % (epoch, cur_best_pre_0))

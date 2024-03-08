@@ -98,7 +98,10 @@ def test_one_user(x):
     user_pos_test = test_user_set[u]
 
     all_items = set(range(0, n_items))
-    test_items = list(all_items - set(training_items))
+    test_items = list(all_items - set(training_items)-set(user_pos_test))
+    random.shuffle(test_items)
+    test_items = test_items[:99]
+    test_items.append(user_pos_test[0])
 
     if args.test_flag == 'part':
         r, auc = ranklist_by_heapq(user_pos_test, test_items, rating, Ks)

@@ -35,13 +35,19 @@ def statistics(train_data, valid_data, test_data):
     n_users = max(max(train_data[:, 0]), max(valid_data[:, 0]), max(test_data[:, 0])) + 1
     n_items = max(max(train_data[:, 1]), max(valid_data[:, 1]), max(test_data[:, 1])) + 1
 
-    if dataset != 'yelp2018':
-        n_items -= n_users
-        # remap [n_users, n_users+n_items] to [0, n_items]
-        train_data[:, 1] -= n_users
-        valid_data[:, 1] -= n_users
-        test_data[:, 1] -= n_users
+    # if dataset != 'yelp2018':
+    #     n_items -= n_users
+    #     # remap [n_users, n_users+n_items] to [0, n_items]
+    #     train_data[:, 1] -= n_users
+    #     valid_data[:, 1] -= n_users
+    #     test_data[:, 1] -= n_users
 
+    # for u_id, i_id in train_data:
+    #     train_user_set[int(u_id)].append(int(i_id))
+    # for u_id, i_id in test_data:
+    #     test_user_set[int(u_id)].append(int(i_id))
+    # for u_id, i_id in valid_data:
+    #     valid_user_set[int(u_id)].append(int(i_id))
     for u_id, i_id in train_data:
         train_user_set[int(u_id)].append(int(i_id))
     for u_id, i_id in test_data:
@@ -93,18 +99,20 @@ def load_data(model_args):
     dataset = args.dataset
     directory = args.data_path + dataset + '/'
 
-    if dataset == 'yelp2018':
-        read_cf = read_cf_yelp2018
-    else:
-        read_cf = read_cf_amazon
+    # if dataset == 'yelp2018':
+    #     read_cf = read_cf_yelp2018
+    # else:
+    #     read_cf = read_cf_amazon
+    read_cf = read_cf_amazon
 
     print('reading train and test user-item set ...')
-    train_cf = read_cf(directory + 'train.txt')
-    test_cf = read_cf(directory + 'test.txt')
-    if args.dataset != 'yelp2018':
-        valid_cf = read_cf(directory + 'valid.txt')
-    else:
-        valid_cf = test_cf
+    train_cf = read_cf(directory + 'train_cf.txt')
+    test_cf = read_cf(directory + 'test_cf.txt')
+    # if args.dataset != 'yelp2018':
+    #     valid_cf = read_cf(directory + 'valid.txt')
+    # else:
+    #     valid_cf = test_cf
+    valid_cf = test_cf
     statistics(train_cf, valid_cf, test_cf)
 
     print('building the adj mat ...')

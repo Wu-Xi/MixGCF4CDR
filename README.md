@@ -1,50 +1,6 @@
-# MixGCF: An Improved Training Method for Graph Neural Network-based Recommender Systems
+# 基于CDR的 LightGCN model 和 NGCF model 源代码
+## 改动地方把原来的 all-ranking 排序测试法改为 CDR 的 TOP-100 排序测试法（99 negatives + 1 positive） 如果没有CDR上的负采样需求，请使用 --ns rns 的随机采样法
 
-This is our PyTorch implementation for the paper:
-
-> Tinglin Huang, Yuxiao Dong, Ming Ding, Zhen Yang, Wenzheng Feng, Xinyu Wang, Jie Tang (2021). MixGCF: An Improved Training Method for Graph Neural Network-based Recommender Systems.  [Paper link](http://keg.cs.tsinghua.edu.cn/jietang/publications/KDD21-Huang-et-al-MixGCF.pdf). In KDD'2021, Virtual Event, Singapore, August 14-18, 2021.
-
-Author: Mr. Tinglin Huang (tinglin.huang at zju.edu.cn)
-
-## Citation 
-
-If you want to use our codes in your research, please cite:
-​    
-```
-@inproceedings{MixGCF2021,
-  author    = {Tinglin Huang and
-               Yuxiao Dong and
-               Ming Ding and
-               Zhen Yang and
-               Wenzheng Feng and
-               Xinyu Wang and
-               Jie Tang},
-  title     = {MixGCF: An Improved Training Method for Graph Neural Network-based Recommender Systems},
-  booktitle = {{KDD}},
-  year      = {2021}
-}
-```
-
-## Environment Requirement
-
-The code has been tested running under Python 3.7.6. The required packages are as follows:
-
-- pytorch == 1.7.0
-- numpy == 1.20.2
-- scipy == 1.6.3
-- sklearn == 0.24.1
-- prettytable == 2.1.0
-
-## Training
-
-The instruction of commands has been clearly stated in the codes (see the parser function in utils/parser.py). Important argument:
-
-- `K`
-  - It specifies the number of negative instances in K-pair loss. Note that when K=1 (by default), the K-pair loss will degenerate into the BPR pairwise loss.
-- `n_negs`
-  - It specifies the size of negative candidate set when using MixGCF.
-- `ns`
-  - It indicates the type of negative sample method. Here we provide two options: rns and mixgcf.
 
 #### LightGCN
 
