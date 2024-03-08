@@ -1,5 +1,5 @@
 # 基于CDR的 LightGCN model 和 NGCF model 源代码
-## 改动地方把原来的 all-ranking 排序测试法改为 CDR 的 TOP-100 排序测试法（99 negatives + 1 positive） 如果没有CDR上的负采样需求，请使用 --ns rns 的随机采样法
+## 改动地方:把原来的 all-ranking 排序测试法改为 CDR 的 TOP-100 排序测试法（99 negatives + 1 positive） 如果没有CDR上的负采样需求，请使用 --ns rns 的随机采样法
 
 
 #### LightGCN
@@ -45,17 +45,3 @@ python main.py --dataset yelp2018 --gnn ngcf --dim 64 --lr 0.0001 --batch_size 1
 
 python main.py --dataset amazon --gnn ngcf --dim 64 --lr 0.0001 --batch_size 1024 --gpu_id 0 --context_hops 3 --pool concat --ns mixgcf --K 1 --n_negs 64
 ```
-
-The [training log](https://github.com/huangtinglin/MixGCF/tree/main/training_log) is also provided. The results fluctuate slightly under different running environment.
-
-## Dataset
-
-We use three processed datasets: Alibaba, Yelp2018, and Amazon.
-
-|               | Alibaba | Yelp2018  | Amazon    |
-| ------------- | ------- | --------- | --------- |
-| #Users        | 106,042 | 31,668    | 192,403   |
-| #Items        | 53,591  | 38,048    | 63,001    |
-| #Interactions | 907,407 | 1,561,406 | 1,689,188 |
-| Density       | 0.00016 | 0.00130   | 0.00014   |
-
